@@ -14,7 +14,7 @@ dict = _["hot","dot","dog","lot","log"]_
 As one shortest transformation is _"hit" -> "hot" -> "dot" -> "dog" -> "cog"_,
 return its length _5_.
 
-*Note:*
+**Note:**
 - Return 0 if there is no such transformation sequence.
 - All words have the same length.
 - All words contain only lowercase alphabetic characters.
@@ -28,3 +28,8 @@ _b_ in the dictionary are neighbors if _a_ can be transformed to _b_
 by changing only one letter.
 
 One thing to note is that **do not compare each leeter of the word with the words in dict whose time complexity is O(m * n) where m is the length of the word and n is the number of words in dict**.
+
+**Note:**
+- For edges associated with lengths, we should use dijkstra's algorithm.
+- For those not, BFS is enough. Consider a concrete example that you
+  have a ball for each vertex and a piece of string for each edge ...
