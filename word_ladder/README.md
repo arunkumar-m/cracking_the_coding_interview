@@ -27,4 +27,4 @@ If we represented this problem as a graph where string _a_ and string
 _b_ in the dictionary are neighbors if _a_ can be transformed to _b_
 by changing only one letter.
 
-One thing to note is that *do not compare each leeter of the word with the words in dict whose time complexity is O(m * n) where m is the length of the word and n is the number of words in dict*.
+One thing to note is that **do not compare each leeter of the word with the words in dict whose time complexity is O(m * n) where m is the length of the word and n is the number of words in dict**.
