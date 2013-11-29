@@ -1,0 +1,10 @@
+# C/C++
+*.o
+*.out
+
+# Python
+*.pyc
+
+# OS generated files
+.DS_Store
+.DS_Store?
