@@ -6,9 +6,9 @@ For example:
 Given binary tree {1,#,2,3},
 
     1
-    \
-     2
-    /
+     \
+      2
+     /
     3
 
 return [1,3,2].
@@ -23,12 +23,12 @@ The serialization of a binary tree follows a level order traversal, where '#' si
 
 Here's an example:
 
-       1
-      / \
-     2   3
-        /
-       4
-        \
-         5
+      1
+     / \
+    2   3
+       /
+      4
+       \
+        5
 
 The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
