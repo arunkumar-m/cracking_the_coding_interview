@@ -4,6 +4,8 @@ Given a roman numeral, convert it to an integer.
 
 Input is guaranteed to be within the range from 1 to 3999.
 
+**APPENDIX**
+
 Symbol | Value
 -------|------
 I      | 1
@@ -21,4 +23,6 @@ CD     | 400
 CM     | 900
 
 
-
+MCMLIV = 1954
+MCMXC = 1990
+MMXIII = 2013
