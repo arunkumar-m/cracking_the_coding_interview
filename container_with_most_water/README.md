@@ -4,7 +4,7 @@ Given _n_ non-negative integers _a1_, _a2_, ..., _an_, where each represents a p
 
 **Note:** You may not slant the container.
 
-# Solution
+## Solution
 
 _O(n^2)_ solution is pretty easy to figure out. _O(n)_ solution is
 really fascinating.
