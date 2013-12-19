@@ -215,3 +215,55 @@ Case 1: u visited by DFS before v. => recursive call corresponding to v
 finishes before that of u (since DFS) => f(v) > f(u)
 
 Case 2: v visited before u => v’s recursive call finishes before u’s even starts. => f(v) > f(u)
+
+## Strongly Connected Components
+
+Formal Definition: the strongly connected components of a directed graph
+G are the equivalent classes of the relation
+
+    u ~ v <=> exists a path u --> v and a path v --> u in G.
+
+~ is a equivalence relation.
+
+### Why Depth-First Search?
+
+If you start DFS from a right place, you will find a SCC. Preprocessing
+needed.
+
+### Kosaraju's Two-Pass Algorithm
+
+Theorem: can compute all SCCs in O(m + n) time.
+
+Algorithm: (given directed graph G)
+
+1. Let G^rev = G with all arcs reversed
+2. run DFS-Loop on G^rev (goal: compute "magical ordering" of nodes)
+  - Let f(v) = "finishing time" of each v in V
+3. run DFS-Loop on G (goal: discover the SCCs one-by-one)
+  - Processing nodes in decreasing order of finishing times
+[SCCs = nodes with the same "leader"]
+
+### Code
+
+    DFS-Loop(graph G)
+    -----------------
+    global variable t = 0 (for finishing times in first pass)
+    [# of nodes processed so far]
+    global variable s = NULL (for leaders in second pass)
+    [current source vertex]
+    Assume nodes labelled 1 to n
+    For i = n down to 1
+      if i not yet explored
+        DFS(G, i)
+
+    DFS(graph G, node i)
+    --------------------
+    - mark i as explored
+    - set leader(i) := node s
+    - for each arc (i, j) in G:
+      - if j not yet explored:
+        - DFS(G, j)
+    - t++
+    - set f(i) := t (i's finishing time)
+
+Running Time: 2 * DFS = O(m + n)
