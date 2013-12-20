@@ -17,3 +17,5 @@ Given m, n satisfy the following condition:
 ## Solution
 
 Use a stack to reverse the list.
+
+No need to use a stack. [see reverse_between_im.cpp]
