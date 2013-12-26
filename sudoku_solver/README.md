@@ -10,4 +10,4 @@ You may assume that there will be only one unique solution.
 
 The two key ideas here are __constraint propagation__ and __search__.
 
-Please refer to [Peter Norvig's post](http://norvig.com/sudoku.html for more details.) for more details.
+Please refer to [Peter Norvig's post](http://norvig.com/sudoku.html) for more details.
