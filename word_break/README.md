@@ -12,6 +12,9 @@ Return true because "leetcode" can be segmented as "leet code".
 
 Dynamic programming.
 
+
+### 2D Dynamic Programming
+
 Create a 2-D array _dp_, _dp[i][j]_ indicates if _s.substr(i, j-i+1)_ can
 be segmented into a space-separated sequence of one or dictionary words.
 
@@ -20,3 +23,7 @@ _dp[i][k] == 1 && dp[k][j] == 1_ for i <= k <= j. Otherwise, _dp[i][j]_
 is 0.
 
 The return value of the function _wordBreak_ is _dp[0][s.length()-1]_.
+
+### 1D Dynamic Programming
+
+It can be solved by 1D dynamic programming as well.
