@@ -71,11 +71,11 @@ void buildAdjList(set<string> &dict) {
     }
 }
 
-void backtrack(vector<int> curr, vector<bool> &explored, vector<vector<string> > &ret, int dest, int depth) {
+void backtrack(vector<int> curr, vector<vector<int> > prev, vector<vector<string> > &ret, int dest, int depth) {
     if (curr.size() == depth) { // base case
         if (curr[depth - 1] == dest) {
             vector<string> tmp;
-            for (int i = 0; i < depth; i++) {
+            for (int i = depth - 1; i >= 0; i--) {
                 tmp.push_back(vdict[curr[i]]);
             }
             ret.push_back(tmp);
@@ -84,14 +84,11 @@ void backtrack(vector<int> curr, vector<bool> &explored, vector<vector<string> >
     }
 
     int last = curr[curr.size() - 1];
-    for (int i = 0; i < adjList[last].size(); i++) {
-        if (!explored[adjList[last][i]]) {
-            explored[adjList[last][i]] = true;
-            curr.push_back(adjList[last][i]);
-            backtrack(curr, explored, ret, dest, depth);
-            curr.pop_back();
-            explored[adjList[last][i]] = false;
-        }
+
+    for (int i = 0; i < prev[last].size(); i++) {
+        curr.push_back(prev[last][i]);
+        backtrack(curr, prev, ret, dest, depth);
+        curr.pop_back();
     }
 }
 
@@ -109,6 +106,7 @@ vector<vector<string> > findLadders(string start, string end, set<string> &dict)
         dist.push_back(INT_MAX);
     }
     queue<int> q;
+    vector<vector<int> > prev(vdict.size());
     int iStart, iEnd;
     for (iStart = 0; vdict[iStart] != start; iStart++);
     for (iEnd = 0; vdict[iEnd] != end; iEnd++);
@@ -119,11 +117,18 @@ vector<vector<string> > findLadders(string start, string end, set<string> &dict)
         int curr = q.front();
         q.pop();
         for (int i = 0; i < adjList[curr].size(); i++) {
-            if (!explored[adjList[curr][i]]) {
-                dist[adjList[curr][i]] = dist[curr] + 1;
-                explored[adjList[curr][i]] = true;
-                q.push(adjList[curr][i]);
+            int v = adjList[curr][i];
+            if (!explored[v]) {
+                prev[v].push_back(curr);
+                dist[v] = dist[curr] + 1;
+                explored[v] = true;
+                q.push(v);
                 // cout << "dist[" << adjList[curr][i] << "]: " << dist[adjList[curr][i]] << endl;
+            }
+            else {
+                if (dist[v] == dist[curr] + 1) {
+                    prev[v].push_back(curr);
+                }
             }
         }
     }
@@ -135,10 +140,8 @@ vector<vector<string> > findLadders(string start, string end, set<string> &dict)
     vector<vector<string> > ret;
     explored.assign(vdict.size(), false);
     vector<int> curr;
-    curr.push_back(iStart);
-    explored[iStart] = true;
-    backtrack(curr, explored, ret, iEnd, shortest + 1);
-    printRet(ret);
+    curr.push_back(iEnd);
+    backtrack(curr, prev, ret, iStart, shortest + 1);
     return ret;
 }
 
@@ -149,6 +152,7 @@ int main() {
     dict.insert("dog");
     dict.insert("lot");
     dict.insert("log");
-    findLadders("hit", "cog", dict);
+    vector<vector<string> > ret = findLadders("hit", "cog", dict);
+    printRet(ret);
     return 0;
 }

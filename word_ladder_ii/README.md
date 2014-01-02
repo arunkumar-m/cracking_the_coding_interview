@@ -28,3 +28,11 @@ Return
 All words have the same length.
 
 All words contain only lowercase alphabetic characters.
+
+## Solution
+
+Use BFS to find the shortest path and use DFS to backtrack. Can pass
+small judge but fail big judge. Need more elaborate optimizations.
+
+**Use an extra _prev_ variable to construct the paths and pass the large
+judge finally!**
