@@ -143,3 +143,89 @@ So: Alg #1 not (always) correct.
 Claim: Alg #2 (order by decreasing ratio Wj / Lj) is always correct.
 
 [Not obvious! - proof coming up next!]
+
+## Correctness Proof
+
+### Correctness Claim
+
+Claim: Alg #2 (order jobs according to decreasing ratios Wj / Lj) is
+always correct.
+
+Proof: by an Exchange Argument
+
+Plan: Fix arbitrary input of n jobs will proceed by contraction.
+
+Let \sigma = greedy schedule, \sigma' = optimal schedule.
+
+\sigma will produce schedule even better than \sigma', contradicting
+purported optimality of \sigma'.
+
+### Correctness Proof
+
+Assume: all Wj / Lj is distinct.
+
+Assume: [just by renaming jobs W1 / L1 > W2 / L2 > ... > Wn / Ln.
+
+Thus: greedy schedule \sigma is just 1, 2, ... , n.
+
+Thus: if optimal schedule \sigma' <> \sigma, then there are consecutive
+jobs i, j with i > j. [only schedule where indices always go up is 1, 2,
+3, ... , n]
+
+Thought experiment: suppose we exchangeorder of i & j in \sigma'
+(leaving other jobs unchanged).
+
+### Cost-Benefit Analysis
+
+By exchanging i and j (i < j):
+- the completion time of a job k other than i or j is unaffected
+- the completion time of the job i goes up
+- the completion time of the job j goes down
+
+Ci' = Ci + Lj
+
+Cj' = Cj - Li
+
+WiCi' + WjCj' = WiCi + WiLj + WjCj - WjLi
+
+Since Wi / Li < Wj / Lj, WiLj - WjLi < 0, thus WiCi' + WjCj' > WiCi +
+WjCj which contradicts optimality of \sigma'.
+WjCj
+
+## Handling Ties
+
+### Correctness Claim
+
+Claim: Alg #2 (order jobs in nonincreasing order of ratio Wj / Lj) is
+always correct. [even with ties]
+
+New Proof Plan: Fix arbitrary input of n jobs. Let \sigma = greedy
+schedule, let \sigma' = any other schedule.  Will show \sigma at least
+as good as \sigma' => implies that greedy schedule is optimal.
+
+### Correctness Proof
+
+Assume: [just by renaming jobs] greedy schedule \sigma is just 1, 2, 3,
+..., n (and so W1 / L1 >= W2 / L2 >= ... >= Wn / Ln)
+
+Consider arbitrary schedule \sigma'. If \sigma' = \sigma, done.
+
+Else recall there exists consecutive jobs i, j in \sigma' with i > j.
+(from last time)
+
+Note: i > j => Wi / Li <= Wj / Lj => WiLj <= WjLi
+
+Recall: exchanging i & j in \sigma' has a net benefit of WjLi - WiLj >=
+0.
+
+Upshot: exchanging an "adjacent inversion" like i, j only makes \sigma'
+better and it decreases the number of inverted pairs.
+(jobs i, j with i > j and i scheduled earlier)
+
+=> after at most nC2 such exchanges, can transform \sigma' into \sigma.
+
+=> \sigma at least as good as \sigma'
+
+=> greedy is optimal
+
+[Like bubble sort]
