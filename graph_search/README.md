@@ -254,6 +254,7 @@ Algorithm: (given directed graph G)
     Assume nodes labelled 1 to n
     For i = n down to 1
       if i not yet explored
+        s := i
         DFS(G, i)
 
     DFS(graph G, node i)
