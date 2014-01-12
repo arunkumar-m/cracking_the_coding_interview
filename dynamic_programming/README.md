@@ -1,90 +1,162 @@
 # Dynamic Programming
 
-## Two Motivating Applications
+## Introduction, and WIS in Path Graphs
 
-### Distributed Shortest Path Routing
+### Problem Statement
 
-#### Graphs and the Internet
+Input: a path graph G = (V, E) with nonnegative weights on vertices.
 
-Claim: the Internet is a graph.
+Desired output: subset of nonadjacent vertices - an independent set - of
+maximum total weight.
 
-[vertices = end hosts + routers, directed edges = direct physical or
-wireless connections]
+Next: iterate through our algorithm design principles.
 
-- web graph [vertices = webpages, edges = hyperlinks]
-- social networks [vertices = people, edges = friend / follow
-  relationshiops]
+Example: 1 - 4 - 5 - 4
 
-#### Internet Routing
+### A Greedy Approach
 
-Suppose: Stanford gateway router needs to send data to the Cornell
-gateway router (over multiple hops)
+Greedy: iteratively choose the max-weight vertex not adjacent to any
+previously chosen vertex.
 
-Question: which Stanford -> Cornell route to use?
+### A Divide & Conquer Approach
 
-Obvious: how about the shortest? (e.g., fewest # of hops)
+Idea: recursively compute the max-weight IS of 1st half, ditto for 2nd
+half, then combine the solutions.
 
-Recall from Part I: Dijkstra's algorithm does this (with nonnegative
-edge lengths)
+## WIS in Path Graphs: Optimal Substructure
 
-Issue: Stanford gateway router would need to know the entire Internet!
+Critical step: reason about structure of an optimal solution. [in terms
+of optimal solutions of smaller subproblems]
 
-=> need a shortest-path algorithm that uses only local computation
+Motivation: this thought experiment narrows down the set of candidates
+for the optimal solution; can search through the small set using
+brute-force-search.
 
-Solution: the Bellman-Ford algorithm (bonus: also handles negative edge
-lengths)
+Notation: Let S subset of V be a max-weight independent set. Let Vn =
+last vertex of path.
 
-### Sequenece Alignment
+### A Case Analysis
 
-Sequence Alignment: fundamental problem in computational genomics.
+Case 1: Suppose Vn not in S. Let G' = G with Vn deleted.
 
-Input: two strings over the alphabet [A, C, G, T]
+Note: S also an IS of G'.
 
-Problem: figure out how "similar" the two strings are
+Note: S must a max-weight IS of G' - if S' was better, it would also be
+better than S in G. [contradiction]
 
-Example applications:
-1. extrapolate function of genome substrings
-2. similar genomes can reflect proximity in evolutionary tree
+Case 2: Suppose Vn in S.
 
-#### Measuring Similarity
+Note: previous vertex Vn-1 not in S. Let G'' = G with Vn-1, vn deleted.
 
-Question: what does "similar" mean?
+Note: S - {Vn} is an IS of G''.
 
-Example:
+Note: must in fact be a max-weight IS of G'' - if S' is better than S in
+G'', then S' union {Vn} is better than S in G [contradiction]
 
-AGGGCT
+### Toward an Algorithm
 
-AGG-CA
+Upshot: a max-weight IS must be either
+- a max-weight IS of G' or
+- Vn + a max-weight IS of G''
 
-#### Problem Statement
+Corollary: if we knew whether or not Vn was in the max-weight IS, call
+recursively compute the max-weight IS of G' or G'' and be done.
 
-Input: 2 strings over {A, C, G, T}
-- penalty >= 0 for each gap
-- penalty >= 0 for mismatching 
+(Crazy?) idea: try both possibilities + return the best solution
 
-Output: alignment of the strings that minimizes the total penalty.
+## WIS in Path Graphs: A Linear Time Algorithm
 
-=> called the needleman-wunsch score [1980]
+### The Story So Far
 
-Small NW Score suggests similar strings.
+Upshot: if we know whether or not Vn is in the max-weight IS, then could
+recursively compute the max-weight IS of G' or G'' and be done.
 
-#### Algorithms Are Fundamental
+Proposed algorithm:
+```
+- recursively compute S1 = max-weight IS of G'
+- recursively compute S2 = max-weight IS of G''
+- return S1 or S2 union [Vn], whichever is better
+```
 
-Note: this measure of genome similarity would be useless without an
-efficient algorithm to find teh best alignment.
+Good news: correct. [optional exercise - prove formally by induction]
 
-Brute-force Search: try all possible alignments, remember the best.
+Bad news: exponential time.
 
-Question: suppose each string has length 500. Roughly how many possible
-alignments are there?
+### The $64,000 Question
 
-- number of students in this class 10^4 - 10^5
-- number of people on earth 10^9 - 10^10
-- number of atoms in know universe 10^80
-- more than any of the above 2^500 >= 10^125
+Important: how many distinct subproblems ever get solved by this algorithm?
 
-The correct answer is "more than any of the above"!
+O(n).
 
-Point: need a fast clever algorithm.
+### Eliminating Redundancy
 
-Solution: straightforward dynamic programming.
+Obvious-fix: the first time you solve a subproblem, cache its solution in a
+global take for O(1)-time lookup later on. ["memoitation"]
+
+Even better: reformulate as a bottom-up iterative algorithm. Let Gi = 1st i
+vertices of G.
+
+Plan: populate array A left to right with A[i] = IS of Gi
+
+Initialization: A[0] = 0, A[1] = w1.
+
+Main loop:
+```
+For i = 2,3,4,...,n:
+    A[i] = max{A[i-1],A[i-2]+1}
+```
+Time complexity: O(n).
+
+## WIS in Path Graphs: A Reconstruction Algorithm
+
+### Optimal Value vs. Optimal Solution
+
+Recall: A[0] = 0, A[1] = w1, for i = 2,3,4 to n A[i] :=
+max[A[i-1],A[i-2]+wi]
+
+Note: algorithm computes the value of a max-weight IS, not such an IS
+itself.
+
+Correct but not ideal: store optimal IS of each Gi in the array in
+addition to its value.
+
+Better: trace back through filled in array to reconstruct optimal
+solution.
+
+Key point: we know that a vertex Vi belongs to a max-weight IS of Gi <=>
+Wi + max-weight IS of Gi-2 >= max-weight IS of Gi-1
+
+### A Reconstruction Algorithm
+
+Let A = filled-in array A: 0,4,4,2,...,184
+
+```
+- let S = empty set
+- while i >= 1 [scan through array from right to left]
+  - if A[i - 1] >= A[i - 2] + Wi [i.e. case 1 wins]
+    - decrease i by 1
+  - else [i.e. case 2 wins]
+    - add Vi to S, decrease i by 2
+- return S
+```
+
+Running time: O(n).
+
+## Principles of Dynamic Programming
+
+### Principles of Dynamic Programming
+
+Fact: our WIS algorithm is a dynamic programming algorithm!
+
+Key ingredients of dynamic programming:
+- identify a small number of subproblems [e.g., compute the max-weight
+  IS of Gi. for i = 0,1,2,3,...n]
+- can quickly + correctly solve "larger" subproblems given the solutions
+  to "smaller subproblems" [usually via a recursive such as A[i] =
+  max[A[i-1],A[i-2]+Wi].
+- after solving all subproblems, can quickly compute the final solution.
+  [usually, it's just the answer of the biggest subproblem.
+
+### Why "Dynamic Programming"?
+
+Richard Bellman.
