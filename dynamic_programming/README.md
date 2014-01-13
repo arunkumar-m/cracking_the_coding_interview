@@ -160,3 +160,71 @@ Key ingredients of dynamic programming:
 ### Why "Dynamic Programming"?
 
 Richard Bellman.
+
+## The Knapsack Problem
+
+### Problem Definition
+
+Input: n items. Each has a value:
+- value vi (nonnegative)
+- size wi (nonnegative and integral)
+- capacity w (a nonnegative integer)
+
+Output: S which is a subset of {1,2,3,...,n} that maximize the sum of vi
+subject to sum of wi <= W.
+
+### Developing a Dynamic Programming Algorithm
+
+Step 1: formulate recurrence [optimal solution as function of solutions
+to "smaller" subproblems] based on structure of an optimal solution.
+
+Let S = a max-value solution to an instance of knapsack.
+
+Case 1: suppose item n not in S.
+- S must be optimal with the first (n - 1) items. (same capacity W)
+
+### Optimal Substructure
+
+Case 2: Suppose item n in S. Then S - [n] is an optimal solution with
+respect to the first (n - 1) items and capacity W - wn.
+
+## A Dynamic Programming Algorithm
+
+### Recurrence from Last Time
+
+Notation: let Vi,x = value of the best solution that:
+- uses only the first i items.
+- has total size <= x
+
+Upshot of last video: for in {1,2,...,n} and any x,
+
+```
+Vi,x = max(Vi-1,x, Vi + Vi-1,x-wi)
+
+Don't forget edge case.
+Edge case.
+```
+
+### The Subproblems
+
+Step 2: identifying the subproblems.
+- all possible prefixes of items {1,2,...,i}
+- all possible (integral) residual capacities x in {0,1,...,n}
+
+Step 3: use recurrence from step 1 to systematically solve all
+subproblems.
+
+Let A = 2-D array
+
+Initiate A[0,x] = 0 for x = 0,1,2,...,W.
+
+```
+for i = 1,2,3,...,n:
+  for x = 0,1,2,...,W:
+    if wi > x:
+      A[i, x] = A[i-1, x-1]
+    else:
+      A[i,x] := max {A[i-1, x], A[i-1, x-wi] + vi}
+```
+
+Running Time: O(nW)
