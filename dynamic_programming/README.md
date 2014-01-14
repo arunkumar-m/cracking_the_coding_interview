@@ -228,3 +228,194 @@ for i = 1,2,3,...,n:
 ```
 
 Running Time: O(nW)
+
+## Sequence Alignment: Optimal Substructure
+
+### Problem Definition
+
+Recall: sequence alignment [needleman-wunsch score = similarity measure
+between strings]
+
+Example: AGGGCT - AGG-CA 
+
+Input: strings X = x1 .. xn, Y = y1 .. yn over some alphabet \sum (like
+{A,C,G,T}.
+- penalty >=0 for inserting a gap.
+- penalty for matching a & b [presumably = 0 if a = b]
+
+Feasible Solutions:
+- alignments - i.e., insert gaps to equalize lengths of the strings
+
+Goal:
+- minimize the penalty
+
+### A Dynamic Programming Approach
+
+Key step: identify subproblems. As usual, will look at structure of an
+optimal solution for clues. [i.e., develop a recurrence then reverse
+engineer the subproblems]
+
+Structure of optimal solution: consider an optimal alignment of X, Y
+
+    - --- x + gaps ---
+    - --- y + gaps ---
+    - focus on final position
+
+How many relevant possiblilities are there for the contents of the final
+position of an optimal alignment?
+
+**3 Cases!**
+
+- Case 1: xm, ym matched
+- Case 2: xm matched with a gap
+- Case 3: ym matched with a gap
+
+### Optimal Substructure
+
+Point: narrow optimal solution down to 3 candidates.
+
+Optimal Substructure: Let X' = X - xm, Y' = Y - yn.
+
+- If case (1) holds, then induced alignment of X' and Y' is optimal.
+- If case (2) holds, then induced alignment of X' and Y is optimal
+- If case (3) holds, then induced alignment of X and Y' is optimal.
+
+### Optimal Substructure (Proof)
+
+Proof: [of Case 1, other cases are similar]
+
+By contradiction, suppose induced alignment of X', Y' has penalty P
+while some other one has penalty p' < p.
+
+=> matching xm with ym to the latter, get an alignment of X and Y with
+penalty p' + penalty of xm yn < p + penalty of xm yn (penalty of
+origianl alignment)
+
+=> contradicts optimality of original alignment.
+
+## An Algorithm for Sequence Alignment
+
+### The Recurrence
+
+Notation: Pi,j = penalty of optimal alignment of Xi and Yj.
+
+Recurrence: for all i = 1,2,3,...,m and j = 1,2,3,...,n:
+
+    Pi,j = min(Xi != Yj + Pi-1,j-1, 1 + Pi-1,j, 1 + Pi,j-1)
+
+Correctness: optimal solution is one these 3 candidates, and recurrence
+selects the best of these.
+
+### Base Cases
+
+Question: what is the value of Pi,0 and P0,i?
+
+Answer: i
+
+### The Algorithm
+
+```
+A = 2-D array.
+A[i,0] = A[0,i] = i for any i >= 0
+For i = 1 to m
+  For j = 1 to n
+    A[i,j] = ...
+```
+
+### Reconstructing A Solution
+
+- trace back through filled-in table A, starting at A[m,n]
+- when you reach subproblem A[i, j]:
+  - if A[i,j] filled using case 1, match xi and yj and got to A[i-1,j-1]
+  - if A[i,j] filled in using case 2, match xi with a gap and got to
+    A[i-1,j]
+  - if A[i,j] filled in using case 3, match yi with a gap and go to
+    A[i,j-1]
+
+[if i = 0 or j = 0, match remaining substring with gaps]
+
+## Optimal Binary Search Trees
+
+### A Multiplicity of Search Trees
+
+Recall: for a given set of keys, there are lots of valid search trees.
+
+Question: what is the "best" search tree for a given set of keys?
+
+=> worst-case search time = O(height) = O(log n)
+
+### Exploiting Non-Uniformity
+
+Question: Suppose we have keys x < y < z and we know that 80% of
+searches are for x, 10% of searches are for y, 10% of searches are for
+z.
+
+What is average search time (i.e., number of nodes looked at) in the
+trees.
+
+### Problem Definition
+
+Input: frequencies p1,p2,...,pn for items 1,2,...,n. [assume items in
+sorted order, 1 < 2 < 3 < ... < n]
+
+Goal: compute a valid search tree that minimizes the weighted (average)
+search time.
+
+    C(T) = \sum_{items i} Pi * [search time for i in T]
+
+Example: if T is a red black tree, then C(T) = O(log n)
+
+### Huffman Codes
+
+Similarities:
+- output = a binary tree
+- goal is (essentially) to minimize average depth with respect to given
+  probabilities
+
+Difference:
+- with Huffman codes, constraint was prefix-freeness [i.e., symbols only
+  at leaves]
+
+## Optimal BSTs: Optimal Substructure
+
+### Greedy Doesn't Work
+
+Intuition: want the most (respectively, least) frequently accessed items
+closest (respectively, furthest) from the root
+
+### Ideas for greedy algorithms:
+
+- bottom-up [populate lowest level with least frequently accessed keys]
+- top-down [put most frequently accessed item at root, recurse]
+
+### Choosing the Root
+
+Issue: with the top-down approach, the choice of root has
+hard-to-predict repercussions further down the tree. [stymies both
+greedy and naive divide + conquer approaches]
+
+Idea: what if we knew the root? (i.e., maybe can try all probabilities
+within a dynamic programming algorithm!)
+
+### Comparison with Huffman Codes
+
+Suppose an optimal binary search tree for keys {1,2,...,n} has root r,
+left subtree T1, and right subtree T2. Pick the strongest statement that
+you suspect is true.
+
+T1 is optimal for keys {1,2,...,r-1}, and T2 is optimal for the keys
+{r+1,r+2,...,n}.
+
+## Optimal BSTs: Proof of Optimal Substructure
+
+### Proof of Optimal Substructure
+
+Let T be an optimal BST for keys {1,2,...,n} with frequencies p1,...,pn.
+Suppose T has root r. Suppose for contradiction that T1 is not optimal
+for {1,2,...,r-1} [other case is similar] with C(T1') < C(T1). Obtain T'
+from T by cutting + pasting T1' in for T1.
+
+Note: to complete contradiction + proof, only need to show that C(T') <
+C(T).
+
+## Optimal BSTs: A Dynamic Programming Algorithm
