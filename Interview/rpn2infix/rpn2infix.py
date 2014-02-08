@@ -29,7 +29,10 @@ def rpn2infix(args):
             try:
                 if arg == "_":
                     num1, prio1 = stack.pop()
-                    stack.append(("_" + num1, priority["_"]))
+                    if prio1 < priority[arg]:
+                        stack.append(("_(" + num1 + ")", priority["_"]))
+                    else:
+                        stack.append(("_" + num1, priority["_"]))
                 else:
                     num2, prio2 = stack.pop()
                     num1, prio1 = stack.pop()
@@ -51,3 +54,5 @@ def rpn2infix(args):
 
 if __name__ == '__main__':
     rpn2infix("3 4 _ + 5 * 6 -".split())
+    print rpn2infix("3 4 * _".split())
+    print rpn2infix("3 _ 4 *".split())
