@@ -77,7 +77,9 @@ TreeNode *deleteNode(TreeNode *root, int key) {
         if (root->getRight() == NULL) return root->getLeft();
 
         // if root has 2 children
-        // TODO: test it
+        int smallest = smallestNode(root)->getKey();
+        root->setKey(smallest);
+        root->setLeft(deleteNode(root->getLeft(), smallest));
     } else if (key < root->getKey()) {
         // go left
         root->setLeft(deleteNode(root->getLeft(), key));
@@ -94,5 +96,9 @@ TreeNode *deleteNode(TreeNode *root, int key) {
  * return the smallest node in the binary search tree
  */
 TreeNode *smallestNode(TreeNode *root) {
-
+    if (!root) return NULL;
+    while (root->getLeft()) {
+        root = root->getLeft();
+    }
+    return root;
 }
