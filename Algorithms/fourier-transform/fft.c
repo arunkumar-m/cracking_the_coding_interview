@@ -64,8 +64,8 @@ void ifft(double *real_image, double *imag_image, int n) {
     }
     fft(real_image, imag_image, n);
     for (int i = 0; i < n; i++) {
-        real_image[i] /= 8;
-        imag_image[i] = -imag_image[i] / 8;
+        real_image[i] /= n;
+        imag_image[i] = -imag_image[i] / n;
     }
 }
 
