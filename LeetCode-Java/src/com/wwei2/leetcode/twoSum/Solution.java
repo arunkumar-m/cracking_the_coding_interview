@@ -1,6 +1,8 @@
+package com.wwei2.leetcode.twoSum;
+
 import java.util.*;
 
-public class twoSum {
+public class Solution {
   public static int[] twoSum(int[] numbers, int target) {
     Map<Integer, Integer> m = new HashMap<Integer, Integer>();
     int[] ret = new int[2];
