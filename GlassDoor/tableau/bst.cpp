@@ -1,9 +1,11 @@
 #include <iostream>
 #include "bst.h"
 
-void inorder(TreeNode *);
-void insertNode(TreeNode *, int);
-TreeNode *smallestNode(TreeNode *);
+static void inorder(TreeNode *);
+static void insertNode(TreeNode *, int);
+static TreeNode *deleteNode(TreeNode *, int);
+static TreeNode *smallestNode(TreeNode *);
+static bool lookupKey(TreeNode *, int);
 
 void BST::print() {
     TreeNode *ptr = root;
@@ -27,21 +29,21 @@ void BST::remove(int key) {
 }
 
 bool BST::lookup(int key) {
-    return false;
+    return lookupKey(root, key);
 }
 
 /*
  * help functions defined here
  */
 
-void inorder(TreeNode *root) {
+static void inorder(TreeNode *root) {
     if (!root) return;
     inorder(root->getLeft());
     std::cout << root->getKey() << " ";
     inorder(root->getRight());
 }
 
-void insertNode(TreeNode *root, int key) {
+static void insertNode(TreeNode *root, int key) {
     if (root->getKey() == key) {
         std::cout << "DUPLICATE KEY" << std::endl;
         return;
@@ -68,7 +70,7 @@ void insertNode(TreeNode *root, int key) {
     }
 }
 
-TreeNode *deleteNode(TreeNode *root, int key) {
+static TreeNode *deleteNode(TreeNode *root, int key) {
     if (root == NULL) return NULL;
     if (root->getKey() == key) {
         // root is the node to be removed
@@ -77,9 +79,9 @@ TreeNode *deleteNode(TreeNode *root, int key) {
         if (root->getRight() == NULL) return root->getLeft();
 
         // if root has 2 children
-        int smallest = smallestNode(root)->getKey();
+        int smallest = smallestNode(root->getRight())->getKey();
         root->setKey(smallest);
-        root->setLeft(deleteNode(root->getLeft(), smallest));
+        root->setRight(deleteNode(root->getRight(), smallest));
     } else if (key < root->getKey()) {
         // go left
         root->setLeft(deleteNode(root->getLeft(), key));
@@ -93,9 +95,26 @@ TreeNode *deleteNode(TreeNode *root, int key) {
 }
 
 /*
+ * lookup if value exists in the binary search tree
+ */
+static bool lookupKey(TreeNode *root, int key) {
+  if (!root) return false;
+  if (root->getKey() == key)
+      return true;
+  else {
+      if (key < root->getKey()) {
+          return lookupKey(root->getLeft(), key);
+      }
+      else {
+          return lookupKey(root->getRight(), key);
+      }
+  }
+}
+
+/*
  * return the smallest node in the binary search tree
  */
-TreeNode *smallestNode(TreeNode *root) {
+static TreeNode *smallestNode(TreeNode *root) {
     if (!root) return NULL;
     while (root->getLeft()) {
         root = root->getLeft();
