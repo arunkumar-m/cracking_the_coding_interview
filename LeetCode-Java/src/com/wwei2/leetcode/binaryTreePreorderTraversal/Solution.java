@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import com.wwei2.leetcode.util.IO;
+
 /**
  * Created by weiwei on 6/23/14.
  */
@@ -49,10 +51,6 @@ public class Solution {
         root.left.left = new TreeNode(3);
         root.left.right = new TreeNode(6);
         List<Integer> result = sol.preorderTraversalIterative(root);
-        System.out.print("List: <");
-        for (int i: result) {
-            System.out.print(i + ",");
-        }
-        System.out.println(">");
+        IO.printList(result);
     }
 }
