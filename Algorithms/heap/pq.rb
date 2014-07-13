@@ -4,7 +4,7 @@ class PriorityQueue
 
   def initialize(data)
     @pq = Array.new
-    data.each { |priority, item| @pq << [priority, item] }
+    data.each { |x| @pq << x }
     PriorityQueue::build_heap(@pq)
   end
 
