@@ -79,4 +79,16 @@ class TestPriorityQueue < Test::Unit::TestCase
     assert_equal(nil, pq.dequeue())
   end
 
+  def test_delete_key
+    pq = @pq1.dup
+    pq.delete_key("project euler")
+    pq.delete_key("football")
+    assert_equal(10, pq.dequeue()[0])
+    assert_equal(5, pq.dequeue()[0])
+    assert_equal(4, pq.dequeue()[0])
+    assert_equal(3, pq.dequeue()[0])
+    assert_equal(1, pq.dequeue()[0])
+    assert_equal(nil, pq.dequeue())
+  end
+
 end

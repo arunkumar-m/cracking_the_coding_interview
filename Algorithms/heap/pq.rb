@@ -1,5 +1,7 @@
 class PriorityQueue
 
+  INT_MAX = 2 ** 31 - 1
+
   attr_accessor :pq
 
   def initialize(data)
@@ -83,6 +85,11 @@ class PriorityQueue
       shift_up(index)
     end
     true
+  end
+
+  def delete_key(key)
+    update_key(key, INT_MAX)
+    dequeue()
   end
 
 end
