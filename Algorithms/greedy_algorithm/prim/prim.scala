@@ -1,6 +1,8 @@
+import scala.annotation.tailrec
+
 object Prim {
 
-  private val filename = "test.txt"
+  private val filename = "edges.txt"
 
   lazy val data = {
     val source = scala.io.Source.fromFile(filename)
@@ -27,9 +29,29 @@ object Prim {
     }
   }
 
+  def prim(adjList: Map[Int, List[Int]], edges: Map[(Int, Int), Int]) = {
+    val vertices = adjList.map(_._1).toSet
+    @tailrec
+    def loop(xs: Set[Int], mst: Set[(Int, Int)]): Set[(Int, Int)] = {
+      if (xs == vertices) mst else {
+        val (edge, cost) =
+          edges.foldLeft((0, 0), Int.MaxValue)((acc, edge) => acc match {
+            case (e, c) => {
+              if (xs(edge._1._1) && (vertices -- xs)(edge._1._2) &&
+                edge._2 < c)
+                (edge._1, edge._2)
+              else
+                (e, c)
+            }
+          })
+        loop(xs + edge._2, mst + edge)
+      }
+    }
+    loop(Set(adjList.head._1), Set())
+  }
+
   def main(args: Array[String]) {
-    println(data)
-    println(adjList)
-    println(edges)
+    val mst = prim(adjList, edges)
+    println("MST: " + mst.foldLeft(0)((cost, edge) => cost + edges(edge)))
   }
 }
