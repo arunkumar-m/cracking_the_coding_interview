@@ -10,41 +10,19 @@ class TestPriorityQueue < Test::Unit::TestCase
       [3, "learn ruby"],
       [4, "learn rails"],
       [10, "learn scala"],
-      [8, "projet euler"],
+      [8, "project euler"],
       [1, "movie"],
     ]
     @expected1 = [
       [10, "learn scala"],
       [6, "football"],
-      [8, "projet euler"],
+      [8, "project euler"],
       [4, "learn rails"],
       [5, "basketball"],
       [3, "learn ruby"],
       [1, "movie"],
     ]
     @pq1 = PriorityQueue.new(@test1)
-  end
-
-  def test_max_heapify
-    data = @test1.dup
-    PriorityQueue.max_heapify(data, 2)
-    assert_equal([6, 5, 8, 4, 10, 3, 1], data.map { |x| x[0] })
-    PriorityQueue.max_heapify(data, 1)
-    assert_equal([6, 10, 8, 4, 5, 3, 1], data.map { |x| x[0] })
-    PriorityQueue.max_heapify(data, 0)
-    assert_equal([10, 6, 8, 4, 5, 3, 1], data.map { |x| x[0] })
-  end
-
-  def test_build_heap
-    data = @test1.dup
-    PriorityQueue::build_heap(data)
-    assert_equal([10, 6, 8, 4, 5, 3, 1], data.map { |x| x[0] })
-  end
-
-  def test_shift_up
-    data = @expected1.dup << [9, "reactive programming"]
-    PriorityQueue::shift_up(data, data.length - 1)
-    assert_equal([10, 9, 8, 6, 5, 3, 1, 4], data.map { |x| x[0] })
   end
 
   def test_peek
@@ -69,6 +47,34 @@ class TestPriorityQueue < Test::Unit::TestCase
     assert_equal(5, pq.dequeue()[0])
     assert_equal(4, pq.dequeue()[0])
     assert_equal(3, pq.dequeue()[0])
+    assert_equal(1, pq.dequeue()[0])
+    assert_equal(nil, pq.dequeue())
+  end
+
+  def test_increase_key
+    pq = @pq1.dup
+    pq.update_key("project euler", 15)
+    assert_equal(15, pq.dequeue()[0])
+    pq.update_key("movie", 9)
+    assert_equal(10, pq.dequeue()[0])
+    assert_equal(9, pq.dequeue()[0])
+    assert_equal(6, pq.dequeue()[0])
+    assert_equal(5, pq.dequeue()[0])
+    assert_equal(4, pq.dequeue()[0])
+    assert_equal(3, pq.dequeue()[0])
+    assert_equal(nil, pq.dequeue())
+  end
+
+  def test_decrease_key
+    pq = @pq1.dup
+    pq.update_key("learn scala", 7)
+    pq.update_key("project euler", 2)
+    assert_equal(7, pq.dequeue()[0])
+    assert_equal(6, pq.dequeue()[0])
+    assert_equal(5, pq.dequeue()[0])
+    assert_equal(4, pq.dequeue()[0])
+    assert_equal(3, pq.dequeue()[0])
+    assert_equal(2, pq.dequeue()[0])
     assert_equal(1, pq.dequeue()[0])
     assert_equal(nil, pq.dequeue())
   end
