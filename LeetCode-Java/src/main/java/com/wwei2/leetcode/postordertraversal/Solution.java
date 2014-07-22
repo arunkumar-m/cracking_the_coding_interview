@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.binaryTreePostorderTraversal;
+package com.wwei2.leetcode.postordertraversal;
 
 import com.wwei2.leetcode.util.TreeNode;
 

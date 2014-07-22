@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.spiralMatrix;
+package com.wwei2.leetcode.spiralmatrix;
 
 import java.util.*;
 

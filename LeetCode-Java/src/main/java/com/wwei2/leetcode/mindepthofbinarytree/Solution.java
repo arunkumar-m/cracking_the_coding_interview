@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.minimumDepthOfBinaryTree;
+package com.wwei2.leetcode.mindepthofbinarytree;
 
 import com.wwei2.leetcode.util.TreeNode;
 

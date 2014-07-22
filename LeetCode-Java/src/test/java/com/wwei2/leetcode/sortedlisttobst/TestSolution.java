@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.convertSortedListToBinarySearchTree;
+package com.wwei2.leetcode.sortedlisttobst;
 
 import com.wwei2.leetcode.util.ListNode;
 import com.wwei2.leetcode.util.TreeNode;

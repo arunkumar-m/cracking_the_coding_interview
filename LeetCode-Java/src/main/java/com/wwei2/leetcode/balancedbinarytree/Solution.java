@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.balancedBinaryTree;
+package com.wwei2.leetcode.balancedbinarytree;
 
 /**
  * Created by weiwei on 6/19/14.

@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.medianOfTwoSortedArrays;
+package com.wwei2.leetcode.medianoftwosortedarrays;
 
 /**
  * Created by weiwei on 5/20/14.

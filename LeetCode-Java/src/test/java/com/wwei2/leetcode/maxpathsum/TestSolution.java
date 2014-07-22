@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.binaryTreeMaximumPathSum;
+package com.wwei2.leetcode.maxpathsum;
 
 import com.wwei2.leetcode.util.TreeNode;
 import org.junit.Assert;

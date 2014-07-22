@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.flattenBinaryTreeToLinkedList;
+package com.wwei2.leetcode.flattenbinarytreetolinkedlist;
 
 import com.wwei2.leetcode.util.TreeNode;
 import org.junit.Assert;

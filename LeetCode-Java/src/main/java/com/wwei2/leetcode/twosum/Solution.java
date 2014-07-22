@@ -1,4 +1,4 @@
-package com.wwei2.leetcode.twoSum;
+package com.wwei2.leetcode.twosum;
 
 import java.util.*;
 
