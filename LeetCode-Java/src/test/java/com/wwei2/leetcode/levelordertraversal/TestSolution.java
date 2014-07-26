@@ -20,9 +20,11 @@ public class TestSolution {
     root.left = new TreeNode(2);
     root.right = new TreeNode(3);
     List<List<Integer>> results = sol.levelOrder(root);
+    System.out.println(results);
     root.left.left = new TreeNode(4);
     root.right.right = new TreeNode(5);
     root.right.right.right = new TreeNode(6);
     results = sol.levelOrder(root);
+    System.out.println(results);
   }
 }
