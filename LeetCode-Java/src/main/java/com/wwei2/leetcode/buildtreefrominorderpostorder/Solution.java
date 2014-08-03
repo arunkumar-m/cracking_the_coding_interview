@@ -2,6 +2,8 @@ package com.wwei2.leetcode.buildtreefrominorderpostorder;
 
 import com.wwei2.leetcode.util.TreeNode;
 
+import static com.wwei2.leetcode.util.ArrayUtil.indexOf;
+
 /**
  * Construct binary tree from inorder and postorder traversal.
  */
@@ -25,14 +27,5 @@ public class Solution {
       root.right = right;
       return root;
     }
-  }
-
-  private int indexOf(int[] order, int start, int end, int elem) {
-    for (int i = start; i <= end; i++) {
-      if (order[i] == elem) {
-        return i;
-      }
-    }
-    return -1;
   }
 }
