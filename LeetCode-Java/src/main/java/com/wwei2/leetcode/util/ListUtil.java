@@ -1,5 +1,6 @@
 package com.wwei2.leetcode.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,5 +37,18 @@ public class ListUtil {
       curr = curr.next;
     }
     return head.next;
+  }
+
+  public static int[] toArray(ListNode head) {
+    List<Integer> integers = new ArrayList<>();
+    while (head != null) {
+      integers.add(head.val);
+      head = head.next;
+    }
+    int[] ret = new int[integers.size()];
+    for (int i = 0; i < ret.length; i++) {
+      ret[i] = integers.get(i);
+    }
+    return ret;
   }
 }
